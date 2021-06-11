@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Prolog Idle</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
+  </head>
+  <body class="light">
+    <div id="unity-container" class="unity-desktop">
+      <canvas id="unity-canvas"></canvas>
+    </div>
+    <div id="loading-cover" style="display:none;">
+      <div id="unity-loading-bar">
+        <div id="unity-progress-bar-empty" style="display: none;">
+          <div id="unity-progress-bar-full"></div>
+        </div>
+        <div class="spinner"></div>
+      </div>
+    </div>
+    <script>
+      const buildUrl = "Build";
+      const loaderUrl = buildUrl + "/98177d783400796503d0c0e61549f11e.js";
+      const config = {
+        dataUrl: buildUrl + "/7474998a2a6cfe9db692efb05644906c.data",
+        frameworkUrl: buildUrl + "/5086fc1bc735a0599df54b065dfaa978.js",
+        codeUrl: buildUrl + "/136eaa4f45790d67dbb7dfad84504e4f.wasm",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "Razensoft",
+        productName: "Prolog Idle",
+        productVersion: "0.0.16",
+      };
+
+      const container = document.querySelector("#unity-container");
+      const canvas = document.querySelector("#unity-canvas");
+      const loadingCover = document.querySelector("#loading-cover");
+      const progressBarEmpty = document.querySelector("#unity-progress-bar-empty");
+      const progressBarFull = document.querySelector("#unity-progress-bar-full");
+      const spinner = document.querySelector('.spinner');
+
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        container.className = "unity-mobile";
+        config.devicePixelRatio = 1;
+      }
+      loadingCover.style.display = "";
+
+      const script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          spinner.style.display = "none";
+          progressBarEmpty.style.display = "";
+          progressBarFull.style.width = `${100 * progress}%`;
+        }).then(() => {
+          setTimeout(() => {
+            loadingCover.style.opacity = 0;
+            setTimeout(() => {
+              loadingCover.style.display = "none";
+            }, 1000);
+          }, 1125);
+        }).catch((message) => {
+          alert(message);
+        });
+      };
+      document.body.appendChild(script);
+    </script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-analytics.js"></script>
+    <script>
+      var firebaseConfig = {
+        apiKey: "AIzaSyDXaXfuFeR9gyvTDB9W-HZfQ0fE2vh8YZ8",
+        authDomain: "prolog-idle.firebaseapp.com",
+        projectId: "prolog-idle",
+        storageBucket: "prolog-idle.appspot.com",
+        messagingSenderId: "203669343909",
+        appId: "1:203669343909:web:bc335fcd1187161fbd074c",
+        measurementId: "G-L58DY2L51K"
+      };
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+    </script>
+  </body>
+</html>
